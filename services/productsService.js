@@ -1,11 +1,11 @@
 
 const { v4: uuidv4 } = require('uuid');
-const CategoriesRepo = require('../repositories/categoriesRepo');
+const ProductsRepo = require('../repositories/productsRepo');
 
 module.exports = {
-    addCategoryService: async function (body){
+    addProductService: async function (body){
     console.log(body);
-    if(!body || !body.type || !body.name) {
+    if(!body || !body.name || !body.category_id || !body.subCategory_id) {
         return {
             error: true,
             message: 'Incomplete input'
@@ -13,14 +13,14 @@ module.exports = {
     }
     const data = {...body};
     data['id'] = uuidv4();  
-    const categoriesRepo = new CategoriesRepo();
-    const res = await categoriesRepo.addCategory(data);
+    const productsRepo = new ProductsRepo();
+    const res = await productsRepo.addProduct(data);
     return {
         error: false,
         data: res
     }
 },
-getCategoryService: async function (page,limit){
+getProductsService: async function (page,limit){
 
     if(!limit || !page) {
         return {
@@ -29,8 +29,8 @@ getCategoryService: async function (page,limit){
         }
     }
 
-    const categoriesRepo = new CategoriesRepo();
-    const res = await categoriesRepo.getCategories(page,limit);
+    const productsRepo = new ProductsRepo();
+    const res = await productsRepo.getProducts(page,limit);
     return {
         error: false,
         data: res
